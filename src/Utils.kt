@@ -7,6 +7,9 @@ import java.security.MessageDigest
  */
 fun readInput(name: String) = File("src", "$name.txt").readLines()
 
+/**
+ * Reads lines from the given input txt file and return them as Int.
+ */
 fun readInputAsInt(name: String) = File("src", "$name.txt").readLines().map { it.toInt() }
 
 /**
