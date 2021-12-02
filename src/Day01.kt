@@ -1,15 +1,15 @@
 fun main() {
     fun part1(input: List<Int>) =
         input
-            .zipWithNext { previous, current -> current - previous }
-            .count { it > 0 }
+            .zipWithNext { previous, current -> previous < current}
+            .count { it }
 
 
     fun part2(input: List<Int>) =
         input
             .windowed(3) { it.sum() }
-            .zipWithNext { previous, current -> current - previous }
-            .count { it > 0 }
+            .zipWithNext { previous, current -> previous < current}
+            .count { it }
 
 
     // test if implementation meets criteria from the description, like:
