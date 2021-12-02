@@ -1,7 +1,6 @@
-private data class Submarine(val position: Pair<Int, Int> = Pair(0, 0), val aim: Int = 0)
-
 fun main() {
     val regex: Regex = """(\w+)\s(\d+)""".toRegex()
+
     fun part1(input: List<String>): Int {
         return input
             .map {
@@ -9,15 +8,15 @@ fun main() {
                     .find(it)
                     ?.destructured
                     ?: error("Does not match")
-            }.fold(Submarine(Pair(0, 0), 0)) { acc, (direction, unit) ->
+            }.fold(Pair(0, 0)) { acc, (direction, unit) ->
                 val units = unit.toInt()
-                when (direction) {
-                    "forward" -> Submarine(acc.position + Pair(units, 0), acc.aim)
-                    "up" -> Submarine(acc.position + Pair(0, -units), acc.aim)
-                    "down" -> Submarine(acc.position + Pair(0, units), acc.aim)
-                    else -> Submarine(acc.position, acc.aim)
+                acc + when (direction) {
+                    "forward" -> Pair(units, 0)
+                    "up" -> Pair(0, -units)
+                    "down" -> Pair(0, units)
+                    else -> Pair(0, 0)
                 }
-            }.let { submarine -> submarine.position.first * submarine.position.second }
+            }.let { pair -> pair.first * pair.second }
     }
 
     fun part2(input: List<String>): Int {
@@ -27,20 +26,18 @@ fun main() {
                     .find(it)
                     ?.destructured
                     ?: error("Does not match")
-            }.fold(Submarine(Pair(0, 0), 0)) { acc, (direction, unit) ->
+            }.fold(Triple(0, 0, 0)) { acc, (direction, unit) ->
                 val units = unit.toInt()
-                when (direction) {
-                    "forward" -> Submarine(acc.position + Pair(units, acc.aim * units), acc.aim)
-                    "up" -> Submarine(acc.position, acc.aim - units)
-                    "down" -> Submarine(acc.position, acc.aim + units)
-                    else -> Submarine(acc.position, acc.aim)
+                acc + when (direction) {
+                    "forward" -> Triple(units, acc.third * units, 0)
+                    "up" -> Triple(0, 0, -units)
+                    "down" -> Triple(0, 0, units)
+                    else -> Triple(0, 0, 0)
                 }
-            }.let { submarine -> submarine.position.first * submarine.position.second }
+            }.let { triple -> triple.first * triple.second }
     }
 
-
     // test if implementation meets criteria from the description, like:
-
     val testInput = readInput("Day02_test")
     check(part1(testInput) == 150)
     check(part2(testInput) == 900)

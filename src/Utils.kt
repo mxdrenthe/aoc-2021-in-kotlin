@@ -21,3 +21,8 @@ fun String.md5(): String = BigInteger(1, MessageDigest.getInstance("MD5").digest
  * Add two Pairs together
  */
 operator fun Pair<Int, Int>.plus(other: Pair<Int, Int>) = Pair(this.first + other.first, this.second + other.second)
+
+/**
+ * Add two Triples together
+ */
+operator fun Triple<Int, Int, Int>.plus(other: Triple<Int, Int, Int>) = Triple(this.first + other.first, this.second + other.second, this.third + other.third)
