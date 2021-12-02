@@ -9,15 +9,15 @@ fun main() {
                     .find(it)
                     ?.destructured
                     ?: error("Does not match")
-            }.fold(Pair(0, 0)) { acc, (direction, unit) ->
+            }.fold(Submarine(Pair(0, 0), 0)) { acc, (direction, unit) ->
                 val units = unit.toInt()
-                acc + when (direction) {
-                    "forward" -> Pair(units, 0)
-                    "up" -> Pair(0, -units)
-                    "down" -> Pair(0, units)
-                    else -> Pair(0, 0)
+                when (direction) {
+                    "forward" -> Submarine(acc.position + Pair(units, 0), acc.aim)
+                    "up" -> Submarine(acc.position + Pair(0, -units), acc.aim)
+                    "down" -> Submarine(acc.position + Pair(0, units), acc.aim)
+                    else -> Submarine(acc.position, acc.aim)
                 }
-            }.let { pair -> pair.first * pair.second }
+            }.let { submarine -> submarine.position.first * submarine.position.second }
     }
 
     fun part2(input: List<String>): Int {
