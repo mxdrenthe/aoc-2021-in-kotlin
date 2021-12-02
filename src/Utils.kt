@@ -16,3 +16,8 @@ fun readInputAsInt(name: String) = File("src", "$name.txt").readLines().map { it
  * Converts string to md5 hash.
  */
 fun String.md5(): String = BigInteger(1, MessageDigest.getInstance("MD5").digest(toByteArray())).toString(16)
+
+/**
+ * Add two Pairs together
+ */
+operator fun Pair<Int, Int>.plus(other: Pair<Int, Int>) = Pair(this.first + other.first, this.second + other.second)
