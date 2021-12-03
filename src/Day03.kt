@@ -10,33 +10,75 @@ fun main() {
         }
     }
 
-    fun part1(input: List<List<Int>>) = transpose(input)
-        .map {
-            it.fold(Pair(0, 0)) { acc, cur ->
-                acc + when (cur) {
-                    0 -> Pair(1, 0)
-                    1 -> Pair(0, 1)
-                    else -> Pair(0, 0)
-                }
+    fun convertToPairs(input: List<Int>) = input
+        .fold(Pair(0, 0)) { acc, cur ->
+            acc + when (cur) {
+                0 -> Pair(1, 0)
+                1 -> Pair(0, 1)
+                else -> Pair(0, 0)
             }
         }
-        .map { it.first < it.second }
+
+    fun convertToNumbers(input: Boolean) = when (input) {
+        true -> 1
+        false -> 0
+    }
+
+    fun convertToDecimal(input: List<Boolean>) = input
+        .reversed()
         .let { binary ->
-            var gamma = 0
-            var epsilon = 0
-            binary.reversed().forEachIndexed { index, element ->
+            var first = 0
+            var second = 0
+            binary.forEachIndexed { index, element ->
                 if (element) {
-                    gamma = (gamma + 1 * 2.0.pow(index.toDouble())).toInt()
+                    first = (first + 1 * 2.0.pow(index)).toInt()
                 } else {
-                    epsilon = (epsilon + 1 * 2.0.pow(index.toDouble())).toInt()
+                    second = (second + 1 * 2.0.pow(index)).toInt()
                 }
             }
-            gamma * epsilon
+            Pair(first, second)
         }
+
+
+    fun part1(input: List<List<Int>>) = transpose(input)
+        .map { convertToPairs(it) }
+        .map { it.first < it.second }
+        .let { binary -> convertToDecimal(binary) }
+        .let { pair -> pair.first * pair.second }
 
 
     fun part2(input: List<List<Int>>): Int {
-        return 0
+        val max = input.maxOf { it.size }
+        var oxygenInput = input
+        var scrubberInput = input
+        for (index in 0 until max) {
+            val transposeOxygenInput = transpose(oxygenInput)
+                .map { convertToPairs(it) }
+                .map { it.first <= it.second }
+
+            val oxygenFilterValue = convertToNumbers(transposeOxygenInput[index])
+            if (oxygenInput.size > 1) {
+                oxygenInput = oxygenInput.filter { it[index] == oxygenFilterValue }
+            }
+
+            val transposeScrubberInput = transpose(scrubberInput)
+                .map { convertToPairs(it) }
+                .map { it.first > it.second }
+
+            val scrubberFilterValue = convertToNumbers(transposeScrubberInput[index])
+            if (scrubberInput.size > 1) {
+                scrubberInput = scrubberInput.filter { it[index] == scrubberFilterValue }
+            }
+        }
+
+        val first = oxygenInput[0].reversed().foldIndexed(0) { index, acc, element ->
+            (acc + element * 2.0.pow(index)).toInt()
+        }
+        val second = scrubberInput[0].reversed().foldIndexed(0) { index, acc, element ->
+            (acc + element * 2.0.pow(index)).toInt()
+        }
+
+        return first * second
     }
 
 
