@@ -13,6 +13,12 @@ fun readInput(name: String) = File("src", "$name.txt").readLines()
 fun readInputAsInt(name: String) = File("src", "$name.txt").readLines().map { it.toInt() }
 
 /**
+ * Reads lines from the given input txt file and return each char as Int.
+ */
+fun readInputAsEachCharToInt(name: String) = File("src", "$name.txt").readLines()
+    .map { it.toCharArray().map { it.toString().toInt() } }
+
+/**
  * Converts string to md5 hash.
  */
 fun String.md5(): String = BigInteger(1, MessageDigest.getInstance("MD5").digest(toByteArray())).toString(16)
