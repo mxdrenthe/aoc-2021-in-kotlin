@@ -11,11 +11,9 @@ fun main() {
             .toMutableMap()
     )
 
-
     fun part1(input: List<String>) = createSchool(input).days(80).size()
 
     fun part2(input: List<String>) = createSchool(input).days(256).size()
-
 
     // test if implementation meets criteria from the description, like:
     val testInput = readInput("Day06_test")
