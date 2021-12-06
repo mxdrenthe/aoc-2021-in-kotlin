@@ -25,12 +25,11 @@ fun main() {
     println(part2(input))
 }
 
-private data class School(val fishes: MutableMap<Long, BigInteger>) {
-    private var queue: Queue<BigInteger> =
-        LinkedList(listOf(BigInteger.ZERO, BigInteger.ZERO))
+private data class School(val fish: MutableMap<Long, BigInteger>) {
+    private var queue: Queue<BigInteger> = LinkedList(listOf(BigInteger.ZERO, BigInteger.ZERO))
 
     fun size(): BigInteger {
-        var value = fishes.values.reduce { acc, bigInteger -> acc.add(bigInteger) }
+        var value = fish.values.reduce { acc, bigInteger -> acc.add(bigInteger) }
         while (queue.isNotEmpty()) {
             value += queue.remove()
         }
@@ -40,9 +39,9 @@ private data class School(val fishes: MutableMap<Long, BigInteger>) {
     fun days(days: Long): School {
         for (day in 0 until days) {
             val birthDay = day % 7
-            val value = fishes.getOrPut(birthDay) { BigInteger.ZERO }
+            val value = fish.getOrPut(birthDay) { BigInteger.ZERO }
             queue.add(value)
-            fishes[birthDay] = value + queue.remove()
+            fish[birthDay] = value + queue.remove()
         }
         return this
     }
