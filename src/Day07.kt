@@ -1,3 +1,5 @@
+import kotlin.math.pow
+
 fun main() {
     fun convertInput(input: List<String>) = input
         .flatMap {
@@ -33,11 +35,9 @@ fun main() {
         var fuel = Long.MAX_VALUE
         for (position in min..max) {
             val neededFuel = crabs.sumOf {
-                when (it > position) {
-                    true -> (position .. it)
-                        .foldIndexed(0L) { index, acc, _ -> acc + index }
-                    false -> (it .. position)
-                        .foldIndexed(0L) { index, acc, _ -> acc + index}
+                when (it < position) {
+                    true -> (position - it).let { distance -> (.5 * distance.toDouble().pow(2) + .5 * distance).toLong() }
+                    false -> (it - position).let { distance -> (.5 * distance.toDouble().pow(2) + .5 * distance).toLong() }
                 }
             }
             if (neededFuel < fuel) {
