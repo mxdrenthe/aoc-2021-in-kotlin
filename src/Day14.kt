@@ -12,27 +12,34 @@ fun main() {
             .toMap()
 
 
-        val pairInsertion = input.subList(2, input.size).map {
-            regex
-                .find(it)
-                ?.destructured
-                ?: error("Does not match")
-        }.associate { (pair, letter) -> pair to PolymerPair(pair, letter) }
+        val pairInsertion = input
+            .subList(2, input.size)
+            .map {
+                regex
+                    .find(it)
+                    ?.destructured
+                    ?: error("Does not match")
+            }
+            .associate { (pair, letter) -> pair to PolymerPair(pair, letter) }
 
         for (i in 1..times) {
-            polymerTemplate = polymerTemplate.entries.fold(mutableMapOf()) { acc, entry ->
-                val produces = pairInsertion[entry.key]!!.produce()
-                acc[produces.first] = entry.value + acc.getOrDefault(produces.first, 0L)
-                acc[produces.second] = entry.value + acc.getOrDefault(produces.second, 0L)
-                acc
-            }
+            polymerTemplate = polymerTemplate.entries
+                .fold(mutableMapOf()) { acc, entry ->
+                    val produces = pairInsertion[entry.key]!!.produce()
+                    acc[produces.first] = entry.value + acc.getOrDefault(produces.first, 0L)
+                    acc[produces.second] = entry.value + acc.getOrDefault(produces.second, 0L)
+                    acc
+                }
         }
 
-        val result = polymerTemplate.entries.fold(mutableMapOf<Char, Long>()) { acc, entry ->
-            acc[entry.key.first()] = entry.value + acc.getOrDefault(entry.key.first(), 0L)
-            acc[entry.key.last()] = entry.value + acc.getOrDefault(entry.key.last(), 0L)
-            acc
-        }.map { it.key to ceil(it.value / 2.0).toLong() }.toMap()
+        val result = polymerTemplate.entries
+            .fold(mutableMapOf<Char, Long>()) { acc, entry ->
+                acc[entry.key.first()] = entry.value + acc.getOrDefault(entry.key.first(), 0L)
+                acc[entry.key.last()] = entry.value + acc.getOrDefault(entry.key.last(), 0L)
+                acc
+            }
+            .map { it.key to ceil(it.value / 2.0).toLong() }
+            .toMap()
 
         val most = result.maxOf { it.value }
         val least = result.minOf { it.value }
