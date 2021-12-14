@@ -4,13 +4,11 @@ fun main() {
             .zipWithNext { previous, current -> previous < current}
             .count { it }
 
-
     fun part2(input: List<Int>) =
         input
             .windowed(3) { it.sum() }
             .zipWithNext { previous, current -> previous < current}
             .count { it }
-
 
     // test if implementation meets criteria from the description, like:
     val testInput = readInputAsInt("Day01_test")
