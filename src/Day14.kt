@@ -11,7 +11,6 @@ fun main() {
             .map { it.key to it.value.size.toLong() }
             .toMap()
 
-
         val pairInsertion = input
             .subList(2, input.size)
             .map {
